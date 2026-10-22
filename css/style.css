@@ -16,3 +16,53 @@ main {
     max-width: 700px;
     margin: 0 auto;
 }
+
+section {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+input,
+textarea,
+select {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 3px;
+}
+
+button[type="submit"] {
+    background-color: #2563eb;
+    color: white;
+}
+
+#task-list {
+    margin-top: 20px;
+}
+
+.task-item {
+    background-color: #f9fafb;
+    padding: 15px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
