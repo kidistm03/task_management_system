@@ -1,7 +1,7 @@
 
 import { createTask } from "./task.js";
 import { validateTaskTitle } from "./validation.js";
-import { getTasks } from "./storage.js";
+import { getTasks, saveTasks } from "./storage.js";
 
 let tasks = getTasks();
 
@@ -52,6 +52,15 @@ taskForm.addEventListener("submit", function (event) {
     const newTask = createTask(title, description, priority);
 
     tasks.push(newTask);
+
+    const saved = saveTasks(tasks);
+
+    if (!saved) {
+        tasks.pop();
+        alert("Could not save the task. Please try again.");
+        return;
+    }
+
     renderTasks();
     taskForm.reset();
 });
