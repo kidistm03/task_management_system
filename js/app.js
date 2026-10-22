@@ -29,10 +29,38 @@ function renderTasks() {
         const description = document.createElement("p");
         description.textContent = task.description || "No description";
 
+
         const priority = document.createElement("p");
         priority.textContent = "Priority: " + task.priority;
 
-        taskElement.append(title, description, priority);
+        const status = document.createElement("p");
+        status.textContent = task.completed ? "Completed" : "Pending";
+
+        const completeButton = document.createElement("button");
+        completeButton.textContent = task.completed
+            ? "Mark as Pending"
+            : "Mark as Completed";
+
+        completeButton.addEventListener("click", function () {
+            task.completed = !task.completed;
+
+            if (!saveTasks(tasks)) {
+                task.completed = !task.completed;
+                alert("Could not save the task status.");
+                return;
+            }
+
+            renderTasks();
+        });
+
+        taskElement.append(
+            title,
+            description,
+            priority,
+            status,
+            completeButton
+        );
+
         taskList.appendChild(taskElement);
     });
 }
