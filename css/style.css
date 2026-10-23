@@ -66,3 +66,13 @@ button[type="submit"] {
     border: 1px solid #ddd;
     border-radius: 6px;
 }
+
+#filter-buttons {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+#filter-buttons button {
+    background-color: #e5e7eb;
+    color: #222;
+}
