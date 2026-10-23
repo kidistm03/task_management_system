@@ -1,6 +1,6 @@
 
 export function validateTaskTitle(title) {
-    if (title.trim() === "") {
+    if (typeof title !== "string" || title.trim() === "") {
         return false;
     }
 

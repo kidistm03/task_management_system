@@ -1,6 +1,9 @@
 
 import { createTask } from "./task.js";
-import { validateTaskTitle } from "./validation.js";
+import {
+    validateTaskTitle,
+    validateTaskPriority
+} from "./validation.js";
 import { getTasks, saveTasks } from "./storage.js";
 
 let tasks = getTasks();
@@ -14,6 +17,40 @@ const taskPriorityInput = document.getElementById("task-priority");
 const searchInput = document.getElementById("search-input");
 const filterButtons = document.querySelectorAll("[data-filter]");
 const taskList = document.getElementById("task-list");
+const totalTasksElement = document.getElementById("total-tasks");
+const completedTasksElement = document.getElementById("completed-tasks");
+const pendingTasksElement = document.getElementById("pending-tasks");
+
+// Check that the required HTML elements exist
+if (
+    !taskForm ||
+    !taskTitleInput ||
+    !taskDescriptionInput ||
+    !taskPriorityInput ||
+    !searchInput ||
+    !taskList ||
+    !totalTasksElement ||
+    !completedTasksElement ||
+    !pendingTasksElement
+) {
+    throw new Error("Some required HTML elements are missing.");
+}
+
+// Check that saved tasks have the expected basic structure
+if (
+    !Array.isArray(tasks) ||
+    !tasks.every(function (task) {
+        return (
+            task &&
+            typeof task.title === "string" &&
+            typeof task.completed === "boolean" &&
+            ["low", "medium", "high"].includes(task.priority)
+        );
+    })
+) {
+    tasks = [];
+    saveTasks(tasks);
+}
 
 // Update the task statistics
 function updateStatistics() {
@@ -25,9 +62,9 @@ function updateStatistics() {
 
     const pendingTasks = totalTasks - completedTasks;
 
-    document.getElementById("total-tasks").textContent = totalTasks;
-    document.getElementById("completed-tasks").textContent = completedTasks;
-    document.getElementById("pending-tasks").textContent = pendingTasks;
+    totalTasksElement.textContent = totalTasks;
+    completedTasksElement.textContent = completedTasks;
+    pendingTasksElement.textContent = pendingTasks;
 }
 
 // Display tasks on the page
@@ -78,6 +115,7 @@ function renderTasks() {
 
         // Create the completion button
         const completeButton = document.createElement("button");
+        completeButton.type = "button";
         completeButton.textContent = task.completed
             ? "Mark as Pending"
             : "Mark as Completed";
@@ -96,6 +134,7 @@ function renderTasks() {
 
         // Create the edit button
         const editButton = document.createElement("button");
+        editButton.type = "button";
         editButton.textContent = "Edit";
 
         editButton.addEventListener("click", function () {
@@ -131,10 +170,9 @@ function renderTasks() {
                 return;
             }
 
-            const validPriorities = ["low", "medium", "high"];
             const cleanedPriority = newPriority.trim().toLowerCase();
 
-            if (!validPriorities.includes(cleanedPriority)) {
+            if (!validateTaskPriority(cleanedPriority)) {
                 alert("Please enter low, medium, or high.");
                 return;
             }
@@ -161,6 +199,7 @@ function renderTasks() {
 
         // Create the delete button
         const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
         deleteButton.textContent = "Delete";
 
         deleteButton.addEventListener("click", function () {
@@ -216,6 +255,11 @@ taskForm.addEventListener("submit", function (event) {
 
     if (!validateTaskTitle(title)) {
         alert("Please enter a task title.");
+        return;
+    }
+
+    if (!validateTaskPriority(priority)) {
+        alert("Please select a valid priority.");
         return;
     }
 
