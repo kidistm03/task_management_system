@@ -9,4 +9,3 @@ export function createTask(title, description, priority) {
 
     return task;
 }
-

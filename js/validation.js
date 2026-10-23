@@ -6,3 +6,9 @@ export function validateTaskTitle(title) {
 
     return true;
 }
+
+export function validateTaskPriority(priority) {
+    const validPriorities = ["low", "medium", "high"];
+
+    return validPriorities.includes(priority);
+}
