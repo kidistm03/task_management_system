@@ -52,18 +52,47 @@ function renderTasks() {
 
             renderTasks();
         });
-
         taskElement.append(
             title,
             description,
             priority,
             status,
-            completeButton
+            completeButton,
+            deleteButton
         );
 
         taskList.appendChild(taskElement);
     });
 }
+
+const deleteButton = document.createElement("button");
+deleteButton.textContent = "Delete";
+
+deleteButton.addEventListener("click", function () {
+    const confirmed = confirm("Are you sure you want to delete this task?");
+
+    if (!confirmed) {
+        return;
+    }
+
+    const taskIndex = tasks.findIndex(function (item) {
+        return item.id === task.id;
+    });
+
+    if (taskIndex === -1) {
+        return;
+    }
+
+    const deletedTask = tasks.splice(taskIndex, 1)[0];
+
+    if (!saveTasks(tasks)) {
+        tasks.splice(taskIndex, 0, deletedTask);
+        alert("Could not delete the task. Please try again.");
+        return;
+    }
+
+    renderTasks();
+});
 
 taskForm.addEventListener("submit", function (event) {
     event.preventDefault();
