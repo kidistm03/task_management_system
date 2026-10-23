@@ -210,8 +210,24 @@ taskForm.addEventListener("submit", function (event) {
             renderTasks();
         });
     });
+
+    function updateStatistics() {
+        const totalTasks = tasks.length;
+
+        const completedTasks = tasks.filter(function (task) {
+            return task.completed;
+        }).length;
+
+        const pendingTasks = totalTasks - completedTasks;
+
+        document.getElementById("total-tasks").textContent = totalTasks;
+        document.getElementById("completed-tasks").textContent = completedTasks;
+        document.getElementById("pending-tasks").textContent = pendingTasks;
+    }
+
     renderTasks();
     taskForm.reset();
+    updateStatistics();
 });
 
 renderTasks();
