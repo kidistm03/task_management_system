@@ -58,6 +58,7 @@ function renderTasks() {
             priority,
             status,
             completeButton,
+            editButton,
             deleteButton
         );
 
@@ -93,6 +94,68 @@ deleteButton.addEventListener("click", function () {
 
     renderTasks();
 });
+
+
+const editButton = document.createElement("button");
+editButton.textContent = "Edit";
+
+editButton.addEventListener("click", function () {
+    const newTitle = prompt("Enter the new task title:", task.title);
+
+    if (newTitle === null) {
+        return;
+    }
+
+    if (!validateTaskTitle(newTitle)) {
+        alert("Task title cannot be empty.");
+        return;
+    }
+
+    const newDescription = prompt(
+        "Enter the new description:",
+        task.description
+    );
+
+    if (newDescription === null) {
+        return;
+    }
+
+    const newPriority = prompt(
+        "Enter priority: low, medium, or high",
+        task.priority
+    );
+
+    if (newPriority === null) {
+        return;
+    }
+
+    const validPriorities = ["low", "medium", "high"];
+
+    if (!validPriorities.includes(newPriority.trim().toLowerCase())) {
+        alert("Please enter low, medium, or high.");
+        return;
+    }
+
+    const oldTitle = task.title;
+    const oldDescription = task.description;
+    const oldPriority = task.priority;
+
+    task.title = newTitle.trim();
+    task.description = newDescription.trim();
+    task.priority = newPriority.trim().toLowerCase();
+
+    if (!saveTasks(tasks)) {
+        task.title = oldTitle;
+        task.description = oldDescription;
+        task.priority = oldPriority;
+
+        alert("Could not save your changes.");
+        return;
+    }
+
+    renderTasks();
+});
+
 
 taskForm.addEventListener("submit", function (event) {
     event.preventDefault();
