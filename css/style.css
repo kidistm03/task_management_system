@@ -76,3 +76,46 @@ button[type="submit"] {
     background-color: #e5e7eb;
     color: #222;
 }
+
+/* Improve task headings */
+.task-item h3 {
+    margin-top: 0;
+    overflow-wrap: anywhere;
+}
+
+/* Make task buttons easier to use */
+.task-item button {
+    margin-top: 8px;
+    margin-right: 6px;
+    background-color: #e5e7eb;
+    color: #222;
+}
+
+/* Show completed tasks clearly */
+.task-item p {
+    overflow-wrap: anywhere;
+}
+
+/* Improve keyboard focus */
+input:focus,
+textarea:focus,
+select:focus,
+button:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+/* Keep the page comfortable on small screens */
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+
+    section {
+        padding: 15px;
+    }
+
+    button {
+        max-width: 100%;
+    }
+}
