@@ -9,6 +9,10 @@ const taskForm = document.getElementById("task-form");
 const taskTitleInput = document.getElementById("task-title");
 const taskDescriptionInput = document.getElementById("task-description");
 const taskPriorityInput = document.getElementById("task-priority");
+const searchInput = document.getElementById("search-input");
+const filterButtons = document.querySelectorAll("[data-filter]");
+
+let currentFilter = "all";
 const taskList = document.getElementById("task-list");
 
 function renderTasks() {
@@ -19,7 +23,7 @@ function renderTasks() {
         return;
     }
 
-    tasks.forEach(function (task) {
+    filteredTasks.forEach(function (task) {
         const taskElement = document.createElement("div");
         taskElement.className = "task-item";
 
@@ -155,7 +159,23 @@ editButton.addEventListener("click", function () {
 
     renderTasks();
 });
+const searchText = searchInput.value.toLowerCase().trim();
 
+const filteredTasks = tasks.filter(function (task) {
+    const matchesSearch = task.title.toLowerCase().includes(searchText);
+
+    const matchesFilter =
+        currentFilter === "all" ||
+        (currentFilter === "completed" && task.completed) ||
+        (currentFilter === "pending" && !task.completed);
+
+    return matchesSearch && matchesFilter;
+});
+
+if (filteredTasks.length === 0) {
+    taskList.textContent = "No matching tasks found.";
+    return;
+}
 
 taskForm.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -180,7 +200,16 @@ taskForm.addEventListener("submit", function (event) {
         alert("Could not save the task. Please try again.");
         return;
     }
+    searchInput.addEventListener("input", function () {
+        renderTasks();
+    });
 
+    filterButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            currentFilter = button.dataset.filter;
+            renderTasks();
+        });
+    });
     renderTasks();
     taskForm.reset();
 });
